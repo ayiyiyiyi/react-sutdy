@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div>
+        <button onclick="store.dispatch({type:'minus',n:1})">-</button>
+        <span id="count"></span>
+        <button  onclick="store.dispatch({type:'plus',n:1})">+</button>
+    </div>
+</body>
+<script>
+    const display = document.querySelector('#count');
+    const countState = {
+        count: 10
+    } 
+    
+    const changeCountState = (state, action) => {
+        if (!state) {
+            return countState;
+        }
+        switch (action.type) {
+            case 'plus':
+                return {
+                    ...state,
+                    count: state.count += action.n
+                }
+            case 'minus':
+                return {
+                    ...state,
+                    count: state.count -= action.n
+                }
+            default:
+                return state;
+        }
+    }
+
+    const createStore = (reducer) => {
+        let state = null;
+        const getState = () => state;
+        let stack = []; 
+        const subscribe = fn => stack.push(fn);
+        const dispatch = (action) => {
+            state = reducer(state, action);
+            stack.forEach(fn => fn())
+        }
+        dispatch({});
+        return { getState, dispatch, subscribe }
+    }
+    const store = createStore(changeCountState)
+    const render = () => {
+        display.innerHTML = store.getState().count;
+    }
+    render();
+
+    store.subscribe(render);
+
+</script>
+</html>
