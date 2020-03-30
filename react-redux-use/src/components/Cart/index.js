@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import {increase, decrease} from './../../actions/cart'
+import {increase, decrease, increaseAsync} from './../../actions/cart'
 import { connect } from 'react-redux'
 import './style.css'
 
@@ -27,6 +27,9 @@ class Cart extends Component {
                 <div>{item.title}</div>
                 <div>{item.count}</div>
                 <div>
+                    <button onClick={() => {
+                      this.props.increaseAsync(item.id)
+                    }}> 过两秒再加 </button>
                     <button onClick={() => {
                       this.props.increase(item.id)
                     }}>+</button>
@@ -60,4 +63,4 @@ const mapStateToProps = (state) => {
 // export default connect(mapStateToProps, mapDispatchToProps)(Cart)
 
 //方法二
-export default connect(mapStateToProps, {increase, decrease})(Cart)
+export default connect(mapStateToProps, {increase, decrease, increaseAsync})(Cart)
