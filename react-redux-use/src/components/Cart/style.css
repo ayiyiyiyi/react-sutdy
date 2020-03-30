@@ -1,0 +1,12 @@
+.table {
+    display: flex;
+    flex: 1;
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+}
+.header {
+    background-color: #eee;
+}
+.table > div {
+    width: 400px;
+}
